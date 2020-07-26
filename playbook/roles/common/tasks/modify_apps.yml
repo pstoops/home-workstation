@@ -1,0 +1,129 @@
+---
+
+- name: Ensure Base Applications are Installed
+  apt:  name={{ item }} state=present install_recommends=yes
+  with_items:
+    - alsa-utils
+    - anacron
+    - avahi-daemon
+    - eject
+    - firmware-linux
+    - hddtemp
+    - iw
+    - kmod
+    - libgl1-mesa-dri
+    - libnss-mdns
+    - p7zip-full
+    - pm-utils
+    - sudo
+    - udisks2
+    - unattended-upgrades
+    - upower
+    - xdg-user-dirs
+    - xdg-utils
+    - xorg
+  become: yes
+  tags: apps
+
+# Built from `kde-full` backwards, eliminating uneccesary apps
+- name: Ensure KDE Applications are Installed
+  apt:  name={{ item }} state=present install_recommends=yes
+  with_items:
+    - sddm
+    - polkit-kde-1
+    - kde-baseapps
+    - kde-plasma-desktop
+    - kdeaccessibility
+    - kdeadmin
+    - kdeartwork
+    - kdeedu
+    - kdegames
+    - kdegraphics
+    - kdegraphics-thumbnailers
+    - svgpart
+    - ffmpegthumbs
+    - network-manager
+    - kio-audiocd
+    - kscd
+    - kde-config-cddb
+    - kdemultimedia
+    - kdenetwork
+    - kdenetwork-filesharing
+    - kde-zeroconf
+    - kdeutils
+    - print-manager
+    - plasma-widgets-addons
+    - plasma-dataengines-addons
+    - plasma-runners-addons
+    - plasma-wallpapers-addons
+    - system-config-printer
+    - kate
+    - k3b
+    - kdesudo
+  become: yes
+  tags:
+    - apps
+    - kde
+
+- name: Ensure Packages for Firefox-KDE Integration are Installed
+  apt:  name={{ item }} state=present
+  with_items:
+    - kde-config-gtk-style
+    - gtk3-engines-breeze
+  become: yes
+  tags:
+    - apps
+    - kde
+
+- name: Ensure Internet Applications and Plugins are Installed
+  apt:  name={{ item }} state=present
+  with_items:
+    - chromium
+    - filezilla
+    - icedtea-plugin
+    - iceweasel
+    - mumble
+    - browser-plugin-freshplayer-pepperflash
+  become: yes
+  tags: apps
+
+- name: Ensure LibreOffice is Installed
+  apt:  name={{ item }} state=present
+  with_items:
+    - libreoffice
+    - libreoffice-help-en-us
+    - libreoffice-kde
+    - libreoffice-pdfimport
+    - libreoffice-style-breeze
+    - mythes-en-us
+    - hunspell-en-us
+    - hyphen-en-us
+  become: yes
+  tags: apps
+
+- name: Ensure Multimedia Codecs are Installed
+  apt:  name={{ item }} state=present
+  with_items:
+    - gir1.2-gst-plugins-base-1.0
+    - gstreamer1.0-fluendo-mp3
+    - gstreamer1.0-plugins-bad
+    - gstreamer1.0-plugins-good
+    - gstreamer1.0-plugins-ugly
+    - gstreamer1.0-pulseaudio
+    - libavcodec-extra
+  become: yes
+  tags: apps
+
+- name: Ensure Miscellaneous Applications and Utilities are Installed
+  apt:  name={{ item }} state=present
+  with_items:
+    - tome
+    - crawl-tiles
+    - gimp
+    - gimp-data-extras
+    - sqlite3
+    - tumbler
+    - tumbler-plugins-extra
+    - vlc
+  become: yes
+  tags: apps

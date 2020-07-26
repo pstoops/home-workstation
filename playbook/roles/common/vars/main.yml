@@ -1,0 +1,58 @@
+---
+
+### Playbook Configuration Variables
+# You may modify the following variables to customize the playbook to your
+# specific needs, however do not remove any variables, they are all required
+# for the playbook to function.
+
+## Task Configuration
+# Setup the Zabbix Agent for Resource Monitoring
+setup_zabbix_agent: True
+# Setup a CUPS client to a CUPS Print Server
+setup_cups_client: False
+# Configure the Samba client and Automatically Mount Personal/Community Shares
+setup_samba: True
+
+
+## General Configuration
+# The URL of the Apt Mirror to Use
+apt_mirror: http://ftp.belnet.be/debian
+# Install KDE & Roguelike Games
+install_games: False
+# Remove the XFCE4 Desktop Environment
+#remove_xfce: True
+
+# The Version of the Tor Browser Bundle to Download and Install
+tor_version: 9.0.6
+# The Full Version of the Tor Browser Bundle, Including OS and Language
+tor_full_version: linux64-{{ tor_version }}_en-US
+
+
+## Zabbix Agent Configuration
+# The Hostname or IP Address of the Zabbix Server
+#zabbix_server: monitor.acorn
+
+
+## CUPS Client Configuration
+# The Hostname or IP Address of the CUPS Server
+#cups_server: printers.acorn
+
+## Samba Client Configuration
+# The Client's Workgroup
+smb_workgroup: TAURUS
+# Connect the Client to a WINS Server
+use_wins_server: False
+# The Hostname or IP Address of the WINS Server
+#wins_server: 192.168.1.254
+# Automatically Mount a Personal Network Share
+mount_personal_share: True
+# Automatically Mount a Community Network Share
+#mount_community_share: True
+# The Local Directory to Mount the Personal Share To
+personal_share_directory: /mnt/Personal
+# The fstab Entry for the Personal Share
+#personal_share_fstab: //aphrodite/Personal  {{ personal_share_directory }} cifs _netdev,guest,uid={{ public_username }},gid={{ public_username }},rw,file_mode=0777,dir_mode=0777,auto 0 0
+# The Local Directory to Mount the Community Share To
+#community_share_directory: /mnt/Community
+# The fstab Entry for the Community Share
+#community_share_fstab: //aphrodite/Community  {{ community_share_directory }} cifs _netdev,guest,uid={{ public_username }},gid={{ public_username }},rw,file_mode=0777,dir_mode=0777,auto 0 0

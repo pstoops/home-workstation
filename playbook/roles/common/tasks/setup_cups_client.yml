@@ -1,0 +1,22 @@
+---
+
+- name: Install CUPS and the CUPS Client
+  apt:  name={{ item }} state=present
+  with_items:
+    - cups
+    - cups-client
+  become: yes
+  tags:
+    - apps
+    - cups
+
+- name:    Disable the Local CUPS Server
+  service: name=cups enabled=no
+  become:  yes
+  tags:    cups
+
+- name:   Configure CUPS to Use Acorn's Print Server
+  copy:   dest=/etc/cups/client.conf content='ServerName {{ cups_server }}\nEncryption IfRequested'
+  notify: restart cups
+  become: yes
+  tags:   cups
