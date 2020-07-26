@@ -5,10 +5,23 @@
   become:     yes
   tags:     configure
 
-- name: Add the Palemoon Apt Key
-  apt_key: url="http://download.opensuse.org/repositories/home:stevenpusser/Debian_9.0/Release.key"
-  become: yes
-  tags: configure
+- name: Configure apt sources
+  copy:
+    src: files/{{ item }}
+    dest: /etc/apt/sources.list.d/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - "apt-eid.list"
+    - "apt-google-chrome.list"
+    - "apt-stack.list"
+    - "apt-vscode.list"
+  
+# - name: Add the Palemoon Apt Key
+#   apt_key: url="http://download.opensuse.org/repositories/home:stevenpusser/Debian_9.0/Release.key"
+#   become: yes
+#   tags: configure
 
 - name: Update the Apt Cache
   apt:  update_cache=yes
@@ -17,35 +30,35 @@
     - apps
     - configure
 
-- name: Copy Over the rc.local File
-  copy: src=rc.local dest=/etc/rc.local
-  become: yes
-  tags: configure
+# - name: Copy Over the rc.local File
+#   copy: src=rc.local dest=/etc/rc.local
+#   become: yes
+#   tags: configure
 
-- name: Configure Grub
-  lineinfile: dest="/etc/default/grub" regexp="{{ item.regex }}" line="{{ item.line }}"
-  with_items:
-      # Skip the Grub Menu
-    - { regex: '^GRUB_TIMEOUT=', line: 'GRUB_TIMEOUT=0' }
-      # IOMMU interferes with some workstations suspend/hibernate functions
-    - { regex: '^GRUB_CMDLINE_LINUX_DEFAULT=', line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet iommu=pt"' }
-  notify: update grub
-  become: yes
-  tags: configure
+# - name: Configure Grub
+#   lineinfile: dest="/etc/default/grub" regexp="{{ item.regex }}" line="{{ item.line }}"
+#   with_items:
+#       # Skip the Grub Menu
+#     - { regex: '^GRUB_TIMEOUT=', line: 'GRUB_TIMEOUT=0' }
+#       # IOMMU interferes with some workstations suspend/hibernate functions
+#     - { regex: '^GRUB_CMDLINE_LINUX_DEFAULT=', line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet iommu=pt"' }
+#   notify: update grub
+#   become: yes
+#   tags: configure
 
 # Install the Correct Graphics Driver
-- include: install_graphics_driver.yml
+#- include: install_graphics_driver.yml
 
 # Install KDE and Additional Applications
 - include: modify_apps.yml
 
 # Setup & Configure the Zabbix Agent
-- include: setup_zabbix_agent.yml
-  when:    setup_zabbix_agent
+#- include: setup_zabbix_agent.yml
+#  when:    setup_zabbix_agent
 
 # Setup & Configure the CUPS Client
-- include: setup_cups_client.yml
-  when:    setup_cups_client
+#- include: setup_cups_client.yml
+#  when:    setup_cups_client
 
 # Setup Users & Their Configurations
 - include: users/main.yml
@@ -57,26 +70,26 @@
 
 # Only Setup the System for MS Office Install if PlayOnLinux Hasn't Been
 # Configured
-- name:  Check If We Need To Install MS Office
-  stat:  path=/home/{{ public_username }}/.PlayOnLinux
-  register: pol_folder
-  when:  prepare_ms_office
-  become:  yes
-  become_user: "{{ public_username }}"
-  tags:  msoffice
+# - name:  Check If We Need To Install MS Office
+#   stat:  path=/home/{{ public_username }}/.PlayOnLinux
+#   register: pol_folder
+#   when:  prepare_ms_office
+#   become:  yes
+#   become_user: "{{ public_username }}"
+#  tags:  msoffice
 
 # Setup Dependencies for Running Microsoft Office 2007
 # The Custom PlayOnLinux Install Script Will Still Have to Be Run From the
 # PlayOnLinux GUI.
-- include: setup_microsoft_office.yml
-  when: pol_folder.stat.exists == false and prepare_ms_office
+# - include: setup_microsoft_office.yml
+#   when: pol_folder.stat.exists == false and prepare_ms_office
 
 
-- name: Disable Suspend & Hibernate When Multiple Users Are Logged In
-  copy: src=disable_multi_session_powersaving.pkla
-        dest=/etc/polkit-1/localauthority/30-site.d/30-disable-multi-session-powersave.pkla
-  become: yes
-  tags: configure
+# - name: Disable Suspend & Hibernate When Multiple Users Are Logged In
+#   copy: src=disable_multi_session_powersaving.pkla
+#         dest=/etc/polkit-1/localauthority/30-site.d/30-disable-multi-session-powersave.pkla
+#   become: yes
+#   tags: configure
 
 # TODO: Unattended Upgrades need some extra configuration, see the wiki
 - name:    Enable Unattended Upgrades
@@ -92,20 +105,20 @@
   become: yes
   tags: configure
 
-- name: Ensure the SDDM Configuration File Exists
-  shell: "sddm --example-config > /etc/sddm.conf"
-  args:
-    creates: "/etc/sddm.conf"
-  become: yes
+# - name: Ensure the SDDM Configuration File Exists
+#   shell: "sddm --example-config > /etc/sddm.conf"
+#   args:
+#     creates: "/etc/sddm.conf"
+#   become: yes
 
-- name: Configure the SDDM Login Manager
-  ini_file: path=/etc/sddm.conf section="{{ item.section }}" option="{{ item.option }}"
-            value="{{ item.value }}"
-  with_items:
-    - { section: "General", option: "Numlock", value: "on" }
-    - { section: "Autologin", option: "User", value: "{{ public_username }}" }
-    - { section: "Autologin", option: "Session", value: "plasma.desktop" }
-    - { section: "Users", option: "HideUsers", value: "seseadmin,prikhi" }
-  notify: restart sddm
-  become: yes
-  tags: kde
+# - name: Configure the SDDM Login Manager
+#   ini_file: path=/etc/sddm.conf section="{{ item.section }}" option="{{ item.option }}"
+#             value="{{ item.value }}"
+#   with_items:
+#     - { section: "General", option: "Numlock", value: "on" }
+#     - { section: "Autologin", option: "User", value: "{{ public_username }}" }
+#     - { section: "Autologin", option: "Session", value: "plasma.desktop" }
+#     - { section: "Users", option: "HideUsers", value: "seseadmin,prikhi" }
+#   notify: restart sddm
+#   become: yes
+#   tags: kde
