@@ -45,7 +45,7 @@ use_wins_server: False
 # The Hostname or IP Address of the WINS Server
 #wins_server: 192.168.1.254
 # Automatically Mount a Personal Network Share
-mount_personal_share: True
+mount_personal_share: False
 # Automatically Mount a Community Network Share
 #mount_community_share: True
 # The Local Directory to Mount the Personal Share To

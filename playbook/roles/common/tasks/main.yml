@@ -6,6 +6,7 @@
   tags:     configure
 
 - name: Configure apt sources
+  become: yes
   copy:
     src: files/{{ item }}
     dest: /etc/apt/sources.list.d/{{ item }}
@@ -13,15 +14,27 @@
     group: root
     mode: '0644'
   with_items:
-    - "apt-eid.list"
+#    - "apt-eid.list"
     - "apt-google-chrome.list"
     - "apt-stack.list"
     - "apt-vscode.list"
   
-# - name: Add the Palemoon Apt Key
-#   apt_key: url="http://download.opensuse.org/repositories/home:stevenpusser/Debian_9.0/Release.key"
-#   become: yes
-#   tags: configure
+- name: Add the Google Apt Key
+  apt_key: url="https://dl.google.com/linux/linux_signing_key.pub"
+  become: yes
+  tags: configure
+
+
+- name: Add the TransIP Apt Key
+  apt_key: url=" https://mirror.transip.net/stack/release.key"
+  become: yes
+  tags: configure
+
+- name: Add the Microsoft Apt Key
+  apt_key: url="https://packages.microsoft.com/keys/microsoft.asc"
+  become: yes
+  tags: configure
+
 
 - name: Update the Apt Cache
   apt:  update_cache=yes
@@ -49,7 +62,7 @@
 # Install the Correct Graphics Driver
 #- include: install_graphics_driver.yml
 
-# Install KDE and Additional Applications
+# Install Desktop and Additional Applications
 - include: modify_apps.yml
 
 # Setup & Configure the Zabbix Agent
@@ -92,11 +105,11 @@
 #   tags: configure
 
 # TODO: Unattended Upgrades need some extra configuration, see the wiki
-- name:    Enable Unattended Upgrades
-  service: name=unattended-upgrades enabled=yes
-  notify:  start unattended upgrades
-  become:    yes
-  tags:    configure
+# - name:    Enable Unattended Upgrades
+#   service: name=unattended-upgrades enabled=yes
+#   notify:  start unattended upgrades
+#   become:    yes
+#   tags:    configure
 
 - name: Ensure NetworkManager Manages Connections
   lineinfile: dest=/etc/NetworkManager/NetworkManager.conf

@@ -20,9 +20,9 @@
   apt:     update_cache=yes
   become:  yes
 
-- name:    update grub
-  shell:   update-grub
-  become:  yes
+# - name:    update grub
+#   shell:   update-grub
+#   become:  yes
 
 - name:    start unattended upgrades
   service: name=unattended-upgrades state=started

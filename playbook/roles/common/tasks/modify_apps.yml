@@ -53,27 +53,27 @@
     - chromium
     - filezilla
     - calibre
-    - cherrytree
+    # - cherrytree
     - flameshot
     - geany
     - gpsbabel-gui
     - gpscorrelate
     - gpsprune
     - inkscape
-    - qlandkartegt
+    # - qlandkartegt
     - qmapshack
     - scribus
-    - Thunar
+    - thunar
     - transmission
     - viking
     - xsane
     - zim
     - stack-client
-    - eid-viewer
-    - eid-mw
-    - beid-mozilla-extension
-    - beid-mozilla-webext
-    - eid-archive
+    # - eid-viewer
+    # - eid-mw
+    # - beid-mozilla-extension
+    # - beid-mozilla-webext
+    # - eid-archive
   become: yes
   tags: apps
 
@@ -85,7 +85,7 @@
 #    - libreoffice-kde
     - libreoffice-pdfimport
     - libreoffice-style-breeze
-    - libreoffice-style-galaxy
+    # - libreoffice-style-galaxy
     - mythes-en-us
     - hunspell-en-us
     - hunspell-nl
