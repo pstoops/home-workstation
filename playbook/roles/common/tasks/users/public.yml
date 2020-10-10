@@ -9,15 +9,15 @@
     - public_user
     - users
 
-- name: Authorize Pavan's SSH keys
+- name: Authorize Peter's SSH keys
   authorized_key: user="{{ public_username }}" key="{{ item }}"
   with_file:
-    - pavan/rsa.pub
-    - pavan/ecdsa.pub
+    - peter/rsa.pub
+#    - peter/ecdsa.pub
   become: yes
   become_user: "{{ public_username }}"
   tags:
-    - pavan
+    - peter
     - users
 
 

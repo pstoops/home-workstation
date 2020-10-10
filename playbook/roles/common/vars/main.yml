@@ -45,14 +45,15 @@ use_wins_server: False
 # The Hostname or IP Address of the WINS Server
 #wins_server: 192.168.1.254
 # Automatically Mount a Personal Network Share
-mount_personal_share: False
+mount_personal_share: True
 # Automatically Mount a Community Network Share
 mount_community_share: False
 # The Local Directory to Mount the Personal Share To
-personal_share_directory: /mnt/Personal
+personal_share_directory: /mnt/synopesto
 # The fstab Entry for the Personal Share
-#personal_share_fstab: //aphrodite/Personal  {{ personal_share_directory }} cifs _netdev,guest,uid={{ public_username }},gid={{ public_username }},rw,file_mode=0777,dir_mode=0777,auto 0 0
+personal_share_fstab: //192.168.1.254/home  {{ personal_share_directory }} cifs _netdev,guest,uid=peter,rw,file_mode=0777,dir_mode=0777,auto 0 0
 # The Local Directory to Mount the Community Share To
-#community_share_directory: /mnt/Community
+community_share_directory: /mnt/Community
 # The fstab Entry for the Community Share
-#community_share_fstab: //aphrodite/Community  {{ community_share_directory }} cifs _netdev,guest,uid={{ public_username }},gid={{ public_username }},rw,file_mode=0777,dir_mode=0777,auto 0 0
+#community_share_fstab: //192.168.1.254/Homes  {{ community_share_directory }} cifs _netdev,guest,uid={{ public_username }},gid={{ public_username }},rw,file_mode=0777,dir_mode=0777,auto 0 0
+community_share_fstab: //192.168.1.254/Homes  {{ community_share_directory }} cifs _netdev,guest,uid=peter,rw,file_mode=0777,dir_mode=0777,auto 0 0
