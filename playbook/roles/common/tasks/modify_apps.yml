@@ -7,16 +7,16 @@
     - anacron
     - avahi-daemon
     - eject
-    - firmware-linux
+#    - firmware-linux
     - hddtemp
     - iw
     - kmod
-    - libgl1-mesa-dri
-    - libnss-mdns
-    - p7zip-full
-    - pm-utils
+#    - libgl1-mesa-dri
+#    - libnss-mdns
+#    - p7zip-full
+#    - pm-utils
     - sudo
-    - udisks2
+#    - udisks2
     - unattended-upgrades
     - upower
     - xdg-user-dirs
@@ -31,7 +31,6 @@
   with_items:
     - lightdm
     - i3
-    - 
   become: yes
   tags:
     - apps

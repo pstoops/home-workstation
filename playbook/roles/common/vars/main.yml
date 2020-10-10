@@ -7,7 +7,7 @@
 
 ## Task Configuration
 # Setup the Zabbix Agent for Resource Monitoring
-setup_zabbix_agent: True
+setup_zabbix_agent: False
 # Setup a CUPS client to a CUPS Print Server
 setup_cups_client: False
 # Configure the Samba client and Automatically Mount Personal/Community Shares
@@ -47,7 +47,7 @@ use_wins_server: False
 # Automatically Mount a Personal Network Share
 mount_personal_share: False
 # Automatically Mount a Community Network Share
-#mount_community_share: True
+mount_community_share: False
 # The Local Directory to Mount the Personal Share To
 personal_share_directory: /mnt/Personal
 # The fstab Entry for the Personal Share

@@ -30,7 +30,7 @@
 
 
 - name: Add a User for Peter
-  user: name=peter state=present shell=/usr/bin/zsh append=yes createhome=yes
+  user: name=peter state=present shell=/bin/bash append=yes createhome=yes
         groups=cdrom,floppy,audio,dip,video,plugdev,netdev,scanner,lpadmin,sudo
         home=/home/peter password=$1$kfDS2UJI$fqsE4SoBkTSwcApC3wzBZ1
   become: yes
