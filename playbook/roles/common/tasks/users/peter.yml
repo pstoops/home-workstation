@@ -1,128 +1,127 @@
 ---
 
-- name: Install Pavan's Favorite Apps
+- name: Install Peter's Favorite Apps
   apt:  name={{ item }} state=present
   with_items:
-    - ack
-    - awesome
-    - awesome-extra
-    - cowsay
-    - compton
-    - fortunes
+    # - ack
+    # - awesome
+    # - awesome-extra
+    # - cowsay
+    # - compton
+    # - fortunes
     - git-all
-    - haskell-stack
+    # - haskell-stack
     - htop
-    - mpv
-    - neovim
-    - palemoon
-    - python-pip
-    - ranger
+    # - mpv
+    # - neovim
+    # - palemoon
+    # - python-pip
+    # - ranger
     - rxvt-unicode-256color
     - screen
-    - udevil
+    # - udevil
     - vim-gtk
-    - workrave
-    - zsh
+    # - workrave
+    # - zsh
   become: yes
   tags:
-    - pavan
+    - peter
     - users
 
 
-- name: Add a User for Pavan
-  user: name=prikhi state=present shell=/usr/bin/zsh append=yes createhome=yes
+- name: Add a User for Peter
+  user: name=peter state=present shell=/bin/bash append=yes createhome=yes
         groups=cdrom,floppy,audio,dip,video,plugdev,netdev,scanner,lpadmin,sudo
-        home=/home/prikhi password=$6$M.6PpXuRy$qJQ5tjN0zkVqasAKFzbK..EW/EVNNq6G4ygBpjTLUhnrjvbtwZdy03KvKBG/UPdQMnFGjXWh6PK1yQlaG1zPv1
+        home=/home/peter password=$1$kfDS2UJI$fqsE4SoBkTSwcApC3wzBZ1
   become: yes
   tags:
-    - pavan
+    - peter
     - users
 
-- name: Authorize Pavan's SSH keys
-  authorized_key: user=prikhi key="{{ item }}"
+- name: Authorize Peter's SSH keys
+  authorized_key: user=peter key="{{ item }}"
   with_file:
-    - pavan/rsa.pub
-    - pavan/ecdsa.pub
+    - peter/id_rsa.pub
   become: yes
-  become_user: prikhi
+  become_user: peter
   tags:
-    - pavan
+    - peter
     - users
 
-- name:  Make Pavan's Configuration Folder
-  shell: mkdir /home/prikhi/.config || /bin/true
+- name:  Make Peter's Configuration Folder
+  shell: mkdir /home/peter/.config || /bin/true
   become:  yes
-  become_user: prikhi
+  become_user: peter
   tags:
-    - pavan
+    - peter
     - users
 
-- name:  Pull Pavan's AwesomeWM Config
-  git:   repo=http://bugs.sleepanarchy.com/awesome-config.git dest=/home/prikhi/.config/awesome recursive=yes
+# - name:  Pull Peter's AwesomeWM Config
+#   git:   repo=http://bugs.sleepanarchy.com/awesome-config.git dest=/home/peter/.config/awesome recursive=yes
+#   become:  yes
+#   become_user: peter
+#   tags:
+#     - peter
+#     - users
+
+
+# - name:  Pull Peter's Dotfiles
+#   git:   repo=http://bugs.sleepanarchy.com/peter/peters-dotfiles.git dest=/home/peter/.dotfiles
+#   become:  yes
+#   become_user: peter
+#   tags:
+#     - peter
+#     - users
+
+# - name:  Link Peter's Dotfiles
+#   shell: ./install.sh chdir=/home/peter/.dotfiles/ creates=/home/peter/.zshrc
+#   become:  yes
+#   become_user: peter
+#   ignore_errors: yes
+#   tags:
+#     - peter
+#     - users
+
+# - name: Install PEP8 and PyLint
+#   pip:  name={{ item }} state=present
+#   with_items:
+#     - pep8
+#     - pylint
+#   become: yes
+#   tags:
+#     - peter
+#     - users
+
+# - name: Install YouCompleteMe Dependencies
+#   apt:  name={{ item }} state=present
+#   with_items:
+#     - cmake
+#     - build-essential
+#     - python-dev
+#   become: yes
+#   tags:
+#     - peter
+#     - users
+
+# - name: Copy over the Hypnotoad Cow File
+#   copy: src=peter/hypnotoad.cow dest=/usr/share/cowsay/cows/hypnotoad.cow
+#   become:  yes
+#   tags:
+#     - peter
+#     - users
+
+- name:  Set Peter's Default XSession to i3
+  shell: echo "[Desktop]\nSession=i3" > ~/.dmrc creates=/home/peter/.dmrc
   become:  yes
-  become_user: prikhi
+  become_user: peter
   tags:
-    - pavan
+    - peter
     - users
 
-
-- name:  Pull Pavan's Dotfiles
-  git:   repo=http://bugs.sleepanarchy.com/prikhi/pavans-dotfiles.git dest=/home/prikhi/.dotfiles
-  become:  yes
-  become_user: prikhi
-  tags:
-    - pavan
-    - users
-
-- name:  Link Pavan's Dotfiles
-  shell: ./install.sh chdir=/home/prikhi/.dotfiles/ creates=/home/prikhi/.zshrc
-  become:  yes
-  become_user: prikhi
-  ignore_errors: yes
-  tags:
-    - pavan
-    - users
-
-- name: Install PEP8 and PyLint
-  pip:  name={{ item }} state=present
-  with_items:
-    - pep8
-    - pylint
-  become: yes
-  tags:
-    - pavan
-    - users
-
-- name: Install YouCompleteMe Dependencies
-  apt:  name={{ item }} state=present
-  with_items:
-    - cmake
-    - build-essential
-    - python-dev
-  become: yes
-  tags:
-    - pavan
-    - users
-
-- name: Copy over the Hypnotoad Cow File
-  copy: src=pavan/hypnotoad.cow dest=/usr/share/cowsay/cows/hypnotoad.cow
-  become:  yes
-  tags:
-    - pavan
-    - users
-
-- name:  Set Pavan's Default XSession to Awesome
-  shell: echo "[Desktop]\nSession=awesome" > ~/.dmrc creates=/home/prikhi/.dmrc
-  become:  yes
-  become_user: prikhi
-  tags:
-    - pavan
-    - users
-
-- name:  Create Pavan's XDG User Directories
+- name:  Create Peter's XDG User Directories
   shell: xdg-user-dirs-update
   become:  yes
-  become_user: prikhi
+  become_user: peter
   tags:
-    - pavan
+    - peter
     - users

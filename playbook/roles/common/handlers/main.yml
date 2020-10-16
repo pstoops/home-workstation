@@ -1,9 +1,5 @@
 ---
 
-- name:    restart zabbix_agent
-  service: name=zabbix-agent state=restarted
-  become:  yes
-
 - name:    restart smbd
   service: name=smbd state=restarted
   become:  yes
@@ -12,8 +8,8 @@
   service: name=nmbd state=restarted
   become:  yes
 
-- name:    restart sddm
-  service: name=sddm state=restarted
+- name:    restart lightdm
+  service: name=lightdm state=restarted
   become:  yes
 
 - name:    restart cups
@@ -24,9 +20,9 @@
   apt:     update_cache=yes
   become:  yes
 
-- name:    update grub
-  shell:   update-grub
-  become:  yes
+# - name:    update grub
+#   shell:   update-grub
+#   become:  yes
 
 - name:    start unattended upgrades
   service: name=unattended-upgrades state=started
