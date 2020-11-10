@@ -52,7 +52,8 @@ applist: [
   'libvirt-daemon-system',
   'virtinst',
   'curl',
-  'tigervnc-standalone-server'
+  'tigervnc-standalone-server',
+  'code'
 ]
 
 libreofficelist: [
