@@ -53,7 +53,12 @@ applist: [
   'virtinst',
   'curl',
   'tigervnc-standalone-server',
-  'code'
+  'code',
+  'hplip-gui',
+  'hplip',
+  'hplip-data',
+  'printer-driver-hpijs',
+  'libsane-hpaio'
 ]
 
 libreofficelist: [
