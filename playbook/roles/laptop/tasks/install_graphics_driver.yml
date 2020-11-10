@@ -1,0 +1,14 @@
+---
+
+- name:  Check Which Graphics Driver We Need
+  shell: lspci | grep VGA
+  register: lspci_vga
+  tags:  graphics_driver
+
+# TODO: Add other drivers when we have other graphics cards...
+
+- name: Install the Intel Graphics Driver
+  apt:  name=xserver-xorg-video-intel
+  when: "'Intel' in lspci_vga.stdout"
+  become: yes
+  tags: graphics_driver
