@@ -46,7 +46,13 @@ applist: [
   'sqlite3',
   'htop',
   'screen',
-  'i3'
+  'i3',
+  'qemu-kvm',
+  'libvirt-clients', 
+  'libvirt-daemon-system',
+  'virtinst',
+  'curl',
+  'tigervnc-standalone-server'
 ]
 
 libreofficelist: [
