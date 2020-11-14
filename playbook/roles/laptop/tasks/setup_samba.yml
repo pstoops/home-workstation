@@ -38,6 +38,21 @@
   become: yes
   tags: samba
 
+- name: Include vault.
+  include_vars:
+    file: vault.yml
+  when:  mount_personal_share or mount_community_share
+
+- name: Create credentials file for SMB mounts
+  template:
+    src: dscred.j2
+    dest: /etc/dscred
+    owner: root
+    group: root
+    mode: '0600'
+  when:  mount_personal_share or mount_community_share
+
+
 # Personal Share
 - name:  Make a Folder for the Personal Share
   shell: mkdir -p {{ personal_share_directory }}
