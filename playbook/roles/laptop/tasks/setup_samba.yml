@@ -51,6 +51,7 @@
     group: root
     mode: '0600'
   when:  mount_personal_share or mount_community_share
+  become: yes
 
 
 # Personal Share
