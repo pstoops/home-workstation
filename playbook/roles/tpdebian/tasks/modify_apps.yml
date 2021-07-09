@@ -1,0 +1,11 @@
+---
+
+- name: Ensure personal Applications and Plugins are Installed
+  apt:  name={{ applist }} state=present
+  become: yes
+  tags: apps
+
+- name: Ensure LibreOffice is Installed
+  apt:  name={{ libreofficelist }} state=present
+  become: yes
+  tags: apps

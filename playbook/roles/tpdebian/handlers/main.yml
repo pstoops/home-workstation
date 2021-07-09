@@ -1,0 +1,33 @@
+---
+
+- name:    restart smbd
+  service: name=smbd state=restarted
+  become:  yes
+
+- name:    restart nmbd
+  service: name=nmbd state=restarted
+  become:  yes
+
+- name:    restart lightdm
+  service: name=lightdm state=restarted
+  become:  yes
+
+- name:    restart cups
+  service: name=cups state=restarted
+  become:  yes
+
+- name:    update package cache
+  apt:     update_cache=yes
+  become:  yes
+
+# - name:    update grub
+#   shell:   update-grub
+#   become:  yes
+
+- name:    start unattended upgrades
+  service: name=unattended-upgrades state=started
+  become:  yes
+
+- name:    restart network manager
+  service: name=network-manager state=restarted
+  become:  yes

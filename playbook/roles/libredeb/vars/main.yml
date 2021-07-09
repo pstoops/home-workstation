@@ -9,7 +9,7 @@
 # Setup a CUPS client to a CUPS Print Server
 setup_cups_client: False
 # Configure the Samba client and Automatically Mount Personal/Community Shares
-setup_samba: True
+setup_samba: False
 
 
 ## General Configuration
