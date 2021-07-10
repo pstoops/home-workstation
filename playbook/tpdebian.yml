@@ -1,4 +1,4 @@
 ---
-- hosts: debian-workstations
+- hosts: tpdebian
   roles:
       - tpdebian
