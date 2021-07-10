@@ -13,6 +13,7 @@ d-i partman/confirm boolean true
 
 ### Locale
 d-i debian-installer/locale string en_US
+### tesing French keyboard layout
 d-i console-keymaps-at/keymap select fr-latin9
 d-i keyboard-configuration/xkb-keymap select fr-latin9
 
