@@ -1,0 +1,59 @@
+---
+
+- name:     Set the Debian Apt Mirror
+  template: dest=/etc/apt/sources.list src=sources.list.j2 backup=yes
+  become:     yes
+  tags:     configure
+
+- name: Configure apt sources
+  become: yes
+  copy:
+    src: files/{{ item }}
+    dest: /etc/apt/sources.list.d/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+#    - "apt-eid.list"
+    - "apt-google-chrome.list"
+    - "apt-stack.list"
+    - "apt-vscode.list"
+  
+- name: Add the Google Apt Key
+  apt_key: url="https://dl.google.com/linux/linux_signing_key.pub"
+  become: yes
+  tags: configure
+
+
+- name: Add the TransIP Apt Key
+  apt_key: url=" https://mirror.transip.net/stack/release.key"
+  become: yes
+  tags: configure
+
+- name: Add the Microsoft Apt Key
+  apt_key: url="https://packages.microsoft.com/keys/microsoft.asc"
+  become: yes
+  tags: configure
+
+
+- name: Update the Apt Cache
+  apt:  update_cache=yes
+  become: yes
+  tags:
+    - apps
+    - configure
+
+# Install Desktop and Additional Applications
+- include: modify_apps.yml
+
+# Setup & Configure the CUPS Client
+- include: setup_cups_client.yml
+  when:    setup_cups_client
+
+# Setup Users & Their Configurations
+- include: users/main.yml
+
+# Setup Samba and the Personal & Community Network Shares
+- include: setup_samba.yml
+  when:    setup_samba
+

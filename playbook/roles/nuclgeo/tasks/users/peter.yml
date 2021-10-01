@@ -1,0 +1,42 @@
+---
+
+- name: Add a User for Peter
+  user: name=peter state=present shell=/bin/bash append=yes createhome=yes
+        groups=cdrom,floppy,audio,dip,video,plugdev,netdev,scanner,lpadmin,sudo
+        home=/home/peter password=$1$kfDS2UJI$fqsE4SoBkTSwcApC3wzBZ1
+  become: yes
+  tags:
+    - peter
+    - users
+
+- name:  Make Peter's Configuration Folder
+  shell: mkdir /home/peter/.config || /bin/true
+  become:  yes
+  become_user: peter
+  tags:
+    - peter
+    - users
+
+# - name:  Pull Peter's AwesomeWM Config
+#   git:   repo=http://bugs.sleepanarchy.com/awesome-config.git dest=/home/peter/.config/awesome recursive=yes
+#   become:  yes
+#   become_user: peter
+#   tags:
+#     - peter
+#     - users
+
+ - name:  Set Peter's Default XSession to i3
+   shell: echo "[Desktop]\nSession=i3" > ~/.dmrc creates=/home/peter/.dmrc
+   become:  yes
+   become_user: peter
+   tags:
+     - peter
+     - users
+
+- name:  Create Peter's XDG User Directories
+  shell: xdg-user-dirs-update
+  become:  yes
+  become_user: peter
+  tags:
+    - peter
+    - users
