@@ -25,13 +25,13 @@
 #     - peter
 #     - users
 
- - name:  Set Peter's Default XSession to i3
-   shell: echo "[Desktop]\nSession=i3" > ~/.dmrc creates=/home/peter/.dmrc
-   become:  yes
-   become_user: peter
-   tags:
-     - peter
-     - users
+- name:  Set Peter's Default XSession to i3
+  shell: echo "[Desktop]\nSession=i3" > ~/.dmrc creates=/home/peter/.dmrc
+  become:  yes
+  become_user: peter
+  tags:
+    - peter
+    - users
 
 - name:  Create Peter's XDG User Directories
   shell: xdg-user-dirs-update

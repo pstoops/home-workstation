@@ -49,7 +49,8 @@ applist: [
   'ssh-askpass',
   'keepassxc',
   'merkaartor',
-  'gnome-maps'
+  'gnome-maps',
+  'gvfs-fuse'
 ]
 
 ## CUPS Client Configuration
