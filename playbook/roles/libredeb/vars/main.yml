@@ -60,7 +60,9 @@ applist: [
   'printer-driver-hpijs',
   'libsane-hpaio',
   'virt-manager',
-  'ssh-askpass'
+  'ssh-askpass',
+  'keychain',
+  'ncdu'
 ]
 
 libreofficelist: [
