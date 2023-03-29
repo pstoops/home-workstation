@@ -52,7 +52,6 @@ applist: [
   'libvirt-daemon-system',
   'virtinst',
   'curl',
-  'tigervnc-standalone-server',
   'code',
   'hplip-gui',
   'hplip',

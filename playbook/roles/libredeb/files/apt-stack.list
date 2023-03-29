@@ -1,1 +1,1 @@
-deb http://mirror.transip.net/stack/software/deb/Debian_10.0/ ./
+deb [arch=amd64] https://filehosting-client.transip.nl/packages/stack-debian-11/ ./

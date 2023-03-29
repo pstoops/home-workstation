@@ -40,3 +40,21 @@
   tags:
     - peter
     - users
+
+- name: Copy private SSH key
+  copy:
+    src: id_ed25519
+    dest: /home/peter/.ssh/id_ed25519
+    owner: peter
+    group: peter
+    mode: '0600'
+  tags:
+    - peter
+
+- name: Copy public SSH key
+  copy:
+    src: id_ed25519.pub
+    dest: /home/peter/.ssh/id_ed25519.pub
+    owner: peter
+    group: peter
+    mode: '0644'

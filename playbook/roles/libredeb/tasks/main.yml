@@ -26,7 +26,7 @@
 
 
 - name: Add the TransIP Apt Key
-  apt_key: url=" https://mirror.transip.net/stack/release.key"
+  apt_key: url="https://filehosting-client.transip.nl/transip-stack.gpg"
   become: yes
   tags: configure
 
