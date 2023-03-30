@@ -54,7 +54,10 @@ d-i grub-installer/with_other_os boolean false
 tasksel tasksel/first multiselect standard, ssh-server, xfce-desktop
 
 # Individual additional packages to install
-d-i pkgsel/include string python python-apt gpg git
+d-i pkgsel/include string ansible gpg git
+
+# Participate in the package usage survey?
+d-i popularity-contest/participate  boolean false
 
 d-i finish-install/reboot_in_progress note
 
