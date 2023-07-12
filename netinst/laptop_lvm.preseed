@@ -1,0 +1,140 @@
+## Disk partitioning.
+d-i partman-auto/method string lvm
+d-i partman-auto/choose_recipe select personal
+
+# If one of the disks that are going to be automatically partitioned
+# contains an old LVM configuration, the user will normally receive a
+# warning. This can be preseeded away…
+# FIXME Unfortunatly, it still errors, but we should install
+# on used volumes anyway without zero’ing
+d-i partman-lvm/device_remove_lvm boolean true
+# The same applies to pre-existing software RAID array:
+d-i partman-md/device_remove_md boolean true
+# It’s ok to have /boot in the LVM
+d-i partman-auto-lvm/no_boot boolean true
+
+# Select all possible disks to use in the volume group
+d-i partman-auto/disk string /dev/sda
+
+# Name of the new LVM VG
+d-i partman-auto-lvm/new_vg_name string vg00
+
+# Default partition schema.
+d-i partman-auto/expert_recipe string \
+personal :: \
+2048 2048 2048 linux-swap method{ swap } \
+format{ } $lvmok{ } lv_name{ swap } in_vg { vg00 } \
+. \
+5120 5120 5120 ext4 method{ lvm } \
+$lvmok{ } mountpoint{ / } lv_name{ lvroot } in_vg { vg00 } \
+format{ } use_filesystem{ } filesystem{ ext4 } \
+options/relatime{ relatime } \
+. \
+10240 10240 10240 ext4 method{ lvm } \
+$lvmok{ } mountpoint{ /usr } lv_name{ lvusr } in_vg { vg00 } \
+format{ } use_filesystem{ } filesystem{ ext4 } \
+options/relatime{ relatime } \
+. \
+1024 1024 1024 ext4 method{ lvm } \
+$lvmok{ } mountpoint{ /tmp } lv_name{ lvtmp } in_vg { vg00 } \
+format{ } use_filesystem{ } filesystem{ ext4 } \
+options/relatime{ relatime } \
+options/nodev{ nodev } options/nosuid{ nosuid } \
+. \
+2048 2048 2048 ext4 method{ lvm } \
+$lvmok{ } mountpoint{ /home } lv_name{ lvhome } in_vg { vg00 } \
+format{ } use_filesystem{ } filesystem{ ext4 } \
+options/relatime{ relatime } \
+options/nodev{ nodev } options/nosuid{ nosuid } \
+. \
+2048 2048 2048 ext4 method{ lvm } \
+$lvmok{ } mountpoint{ /var } lv_name{ lvvar } in_vg { vg00 } \
+format{ } use_filesystem{ } filesystem{ ext4 } \
+options/relatime{ relatime } \
+. \
+1 1024 1000000000 ext4 method{ lvm } \
+$lvmok{ } mountpoint{ /tmp/hack } lv_name{ lvhack } in_vg { vg00 } \
+.
+
+# This makes partman automatically partition without confirmation, provided
+# that you told it what to do using one of the methods above.
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select Finish
+d-i partman/confirm_nooverwrite boolean true
+d-i partman/confirm boolean true
+
+### Locale
+d-i debian-installer/locale string en_US
+d-i console-keymaps-at/keymap select us
+d-i keyboard-configuration/xkb-keymap select us
+
+### Clock
+d-i clock-setup/utc boolean true
+d-i time/zone string Europe/Brussels
+
+### Network
+d-i netcfg/choose_interface select auto
+d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/get_domain string unassigned-domain
+d-i netcfg/wireless_wep string
+
+### Mirrors
+d-i apt-setup/use_mirror boolean true
+d-i mirror/country string enter information manually
+d-i mirror/http/hostname string ftp.belnet.be
+d-i mirror/http/directory string /debian
+d-i mirror/http/proxy string
+
+### Apt sources
+#d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
+
+### Users
+d-i passwd/root-login boolean false
+d-i passwd/user-fullname string Peter Stoops
+d-i passwd/username string peter
+d-i passwd/user-password-crypted password $1$5MtPQCsu$ErcsItxpbgWry4tD.OXwS0
+
+### Grub
+#d-i grub-installer/bootdev  string (hd0,0)
+d-i grub-installer/bootdev  string default
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean false
+
+### Package selection
+#tasksel tasksel/first multiselect standard, xfce-desktop, ssh-server
+tasksel tasksel/first multiselect standard, ssh-server
+
+# Individual additional packages to install
+d-i pkgsel/include string gpg git ansible
+
+# Participate in the package usage survey?
+d-i popularity-contest/participate  boolean false
+
+d-i finish-install/reboot_in_progress note
+
+### X configuration
+# X can detect the right driver for some cards, but if you're preseeding,
+# you override whatever it chooses. Still, vesa will work most places.
+#xserver-xorg xserver-xorg/config/device/driver select vesa
+
+# A caveat with mouse autodetection is that if it fails, X will retry it
+# over and over. So if it's preseeded to be done, there is a possibility of
+# an infinite loop if the mouse is not autodetected.
+#xserver-xorg xserver-xorg/autodetect_mouse boolean true
+
+# Monitor autodetection is recommended.
+xserver-xorg xserver-xorg/autodetect_monitor boolean true
+xserver-xorg xserver-xorg/config/monitor/selection-method \
+       select medium
+xserver-xorg xserver-xorg/config/monitor/mode-list \
+       select 1440x900 @ 60 Hz
+
+d-i preseed/late_command string \
+    wget http://192.168.1.4/netinst/deb_postinst.sh -O /target/root/deb_postinst.sh;  \
+    chmod +x /target/root/deb_postinst.sh; \
+    in-target --pass-stdout /bin/bash /root/deb_postinst.sh;
+
+#d-i preseed/late_command string cp /cdrom/files/run.sh /target/root/; chmod +x /target/root/run.sh; in-target /bin/bash /root/run.sh; cp /cdrom/files/configs.sh /target/root/;
