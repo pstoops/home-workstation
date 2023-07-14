@@ -10,3 +10,12 @@ echo -e "auto lo ${NIC} \niface lo inet loopback\n\niface ${NIC} inet static\n\t
 echo "deb_postinst: wrote interfaces files"
 echo "nuctst.home.taurus" > /etc/hostname
 echo "deb_postinst: wrote hostname file"
+echo "deb_postinst: getting SSH public key for peter"
+mkdir -p /home/peter/.ssh
+wget http://192.168.1.4/netinst/id_ed25519.pub -O /home/peter/.ssh/authorized_keys
+USRID=$(cat /etc/passwd | grep '^peter' | awk -F':' '{print $3}')
+GRPID=$(cat /etc/group | grep '^peter' | awk -F':' '{print $3}')
+chown -R ${USRID}:${GRPID} /home/peter/.ssh
+chmod 644 /home/peter/.ssh/authorized_keys
+echo "deb_postinst: setting default sudo rights for peter"
+echo "peter	ALL=(ALL)	NOPASSWD: ALL" > /etc/sudoers.d/support

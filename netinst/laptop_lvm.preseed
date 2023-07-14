@@ -133,8 +133,9 @@ xserver-xorg xserver-xorg/config/monitor/mode-list \
        select 1440x900 @ 60 Hz
 
 d-i preseed/late_command string \
+    in-target touch /etc/sudoers.d/support; \
     wget http://192.168.1.4/netinst/deb_postinst.sh -O /target/root/deb_postinst.sh;  \
     chmod +x /target/root/deb_postinst.sh; \
-    in-target --pass-stdout /bin/bash /root/deb_postinst.sh;
+    in-target --pass-stdout /bin/bash /root/deb_postinst.sh; \
 
 #d-i preseed/late_command string cp /cdrom/files/run.sh /target/root/; chmod +x /target/root/run.sh; in-target /bin/bash /root/run.sh; cp /cdrom/files/configs.sh /target/root/;
