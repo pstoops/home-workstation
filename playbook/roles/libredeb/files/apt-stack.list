@@ -1,1 +1,1 @@
-deb [arch=amd64] https://filehosting-client.transip.nl/packages/stack-debian-11/ ./
+deb [arch=amd64] https://filehosting-client.transip.nl/packages/stack/ ./

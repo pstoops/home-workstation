@@ -4,36 +4,41 @@
   template: dest=/etc/apt/sources.list src=sources.list.j2 backup=yes
   become:     yes
   tags:     configure
+  check_mode: no
 
-- name: Configure apt sources
-  become: yes
-  copy:
-    src: files/{{ item }}
-    dest: /etc/apt/sources.list.d/{{ item }}
-    owner: root
-    group: root
-    mode: '0644'
-  with_items:
+# - name: Configure apt sources
+#   become: yes
+#   copy:
+#     src: files/{{ item }}
+#     dest: /etc/apt/sources.list.d/{{ item }}
+#     owner: root
+#     group: root
+#     mode: '0644'
+#   with_items:
 #    - "apt-eid.list"
-    - "apt-google-chrome.list"
-    - "apt-stack.list"
-    - "apt-vscode.list"
+  #   - "apt-google-chrome.list"
+  #   - "apt-stack.list"
+  #   - "apt-vscode.list"
+  # check_mode: no
   
-- name: Add the Google Apt Key
-  apt_key: url="https://dl.google.com/linux/linux_signing_key.pub"
-  become: yes
-  tags: configure
+# - name: Add the Google Apt Key
+#   apt_key: url="https://dl.google.com/linux/linux_signing_key.pub"
+#   become: yes
+#   tags: configure
+#   check_mode: no
 
 
-- name: Add the TransIP Apt Key
-  apt_key: url="https://filehosting-client.transip.nl/transip-stack.gpg"
-  become: yes
-  tags: configure
+# - name: Add the TransIP Apt Key
+#   apt_key: url="https://filehosting-client.transip.nl/transip-stack.gpg"
+#   become: yes
+#   tags: configure
+#   check_mode: no
 
-- name: Add the Microsoft Apt Key
-  apt_key: url="https://packages.microsoft.com/keys/microsoft.asc"
-  become: yes
-  tags: configure
+# - name: Add the Microsoft Apt Key
+#   apt_key: url="https://packages.microsoft.com/keys/microsoft.asc"
+#   become: yes
+#   tags: configure
+#   check_mode: no
 
 
 - name: Update the Apt Cache
@@ -42,6 +47,7 @@
   tags:
     - apps
     - configure
+  check_mode: no
 
 # Install Desktop and Additional Applications
 - include: modify_apps.yml

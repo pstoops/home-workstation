@@ -12,16 +12,6 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 # It’s ok to have /boot in the LVM
 d-i partman-auto-lvm/no_boot boolean true
-# Use all available space for volume group
-d-i partman-auto-lvm/guided_size string 100%
-# This makes partman automatically partition without confirmation, provided
-# that you told it what to do using one of the methods above.
-d-i partman-lvm/confirm_nooverwrite boolean true
-d-i partman-lvm/confirm boolean true
-d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select Finish
-d-i partman/confirm_nooverwrite boolean true
-d-i partman/confirm boolean true
 
 # Select all possible disks to use in the volume group
 d-i partman-auto/disk string /dev/sda
@@ -66,6 +56,15 @@ options/relatime{ relatime } \
 $lvmok{ } mountpoint{ /tmp/hack } lv_name{ lvhack } in_vg { vg00 } \
 .
 
+# This makes partman automatically partition without confirmation, provided
+# that you told it what to do using one of the methods above.
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select Finish
+d-i partman/confirm_nooverwrite boolean true
+d-i partman/confirm boolean true
+
 ### Locale
 d-i debian-installer/locale string en_US
 d-i console-keymaps-at/keymap select us
@@ -73,7 +72,7 @@ d-i keyboard-configuration/xkb-keymap select us
 
 ### Clock
 d-i clock-setup/utc boolean true
-d-i time/zone string {{timezone}}
+d-i time/zone string Europe/Brussels
 
 ### Network
 d-i netcfg/choose_interface select auto
@@ -92,17 +91,11 @@ d-i mirror/http/proxy string
 #d-i apt-setup/non-free boolean true
 d-i apt-setup/contrib boolean true
 
-### Media scanning
-# as we generate our own iso, prevent from asking to scan additional media
-d-i apt-setup/cdrom/set-first false
-d-i apt-setup/cdrom/set-next boolean false   
-d-i apt-setup/cdrom/set-failed boolean false
-
 ### Users
 d-i passwd/root-login boolean false
-d-i passwd/user-fullname string {{username}}
-d-i passwd/username string {{username}}
-d-i passwd/user-password-crypted password {{pwhash}}
+d-i passwd/user-fullname string Peter Stoops
+d-i passwd/username string peter
+d-i passwd/user-password-crypted password $1$5MtPQCsu$ErcsItxpbgWry4tD.OXwS0
 
 ### Grub
 #d-i grub-installer/bootdev  string (hd0,0)
@@ -142,7 +135,7 @@ xserver-xorg xserver-xorg/config/monitor/mode-list \
 
 d-i preseed/late_command string \
     mkdir -p -m 700 /target/root/.ssh; \
-    echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINvCUKfGaPifqcOZLQn4GnFCM7TYiiMSJiDIZDcuN9VL {{username}}@libredeb.home.taurus" > /target/root/.ssh/authorized_keys; \
+    echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINvCUKfGaPifqcOZLQn4GnFCM7TYiiMSJiDIZDcuN9VL peter@libredeb.home.taurus" > /target/root/.ssh/authorized_keys; \
     in-target chown --recursive root:root /root/.ssh; \
     in-target chmod 0644 /root/.ssh/authorized_keys; \
     in-target update-alternatives --set editor /usr/bin/vim.basic; \
@@ -150,5 +143,5 @@ d-i preseed/late_command string \
     wget http://192.168.1.4/netinst/deb_postinst.sh -O /target/root/deb_postinst.sh; \
     chmod +x /target/root/deb_postinst.sh; \
     in-target touch /etc/sudoers.d/support; \
-    echo "{{username}}	ALL=(ALL)	NOPASSWD: ALL" > /target/etc/sudoers.d/support; \
+    echo "peter	ALL=(ALL)	NOPASSWD: ALL" > /target/etc/sudoers.d/support; \
     in-target --pass-stdout /bin/bash /root/deb_postinst.sh; 

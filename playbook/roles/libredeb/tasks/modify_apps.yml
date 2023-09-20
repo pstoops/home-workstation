@@ -4,8 +4,10 @@
   apt:  name={{ applist }} state=present
   become: yes
   tags: apps
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Ensure LibreOffice is Installed
   apt:  name={{ libreofficelist }} state=present
   become: yes
   tags: apps
+  ignore_errors: "{{ ansible_check_mode }}"

@@ -1,0 +1,16 @@
+Required vars:
+  - fqdn
+  - IP
+  - Netmask
+  - Gateway
+
+Adapt preseed template with vars
+
+Build a custom iso
+
+Copy the iso to the NFS share on nucmgmt
+
+=> manual work: boot the target machine (laptop / VM / ...)
+
+=> autoinstall
+
